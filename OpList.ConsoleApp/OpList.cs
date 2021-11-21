@@ -45,19 +45,9 @@ namespace OpList.ConsoleApp
         {
             var previous = _first.Previous;
 
-            if (previous == _first)
-            {
-                var newElement = new OpElement<T>(value, _first);
-                _first.Next = newElement;
-                _first.Previous = newElement;
-            }
-
-            if (previous != _first)
-            {
-                var newElement = new OpElement<T>(value, previous, _first);
-                previous.Next = newElement;
-                _first.Previous = newElement;
-            }
+            var newElement = new OpElement<T>(value, previous, _first);
+            previous.Next = newElement;
+            _first.Previous = newElement;
         }
 
         public void Add(int i, T value)
@@ -72,7 +62,6 @@ namespace OpList.ConsoleApp
 
             if (op == 1)
             {
-
                 while (j != i)
                 {
                     current = current.Next;
