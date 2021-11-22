@@ -86,46 +86,7 @@ namespace OpList.ConsoleApp
 
         public void Replace(int i, T value)
         {
-            OpElement<T> previous = _first.Previous;
-            OpElement<T> current = _first;
-            OpElement<T> next = _first;
-
-            var op = ReadMode(i);
-
-            var j = 0;
-
-            if (op == 1)
-            {
-
-                while (j != i)
-                {
-                    current = current.Next;
-                    next = current.Next;
-                    previous = current.Previous;
-
-                    j += op;
-                }
-
-                current = new OpElement<T>(value, previous, next);
-                previous.Next = current;
-                next.Previous = current;
-            }
-
-            else
-            {
-                while (j != i)
-                {
-                    current = current.Previous;
-                    next = current.Previous;
-                    previous = current.Next;
-
-                    j += op;
-                }
-
-                current = new OpElement<T>(value, next, previous);
-                previous.Previous = current;
-                next.Next = current;
-            }
+            IndexOf(i).Value = value;
         }
 
         public void Remove(int i)
