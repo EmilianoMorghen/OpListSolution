@@ -60,36 +60,34 @@ namespace OpList.ConsoleApp
 
             var j = 0;
 
-            if (op == 1)
+            while (j != i)
             {
-                while (j != i)
+                if (op == 1)
                 {
+
                     current = current.Next;
                     next = current;
                     previous = current.Previous;
 
                     j += op;
+
+                    current = new OpElement<T>(value, previous, next);
+                    previous.Next = current;
+                    next.Previous = current;
                 }
 
-                current = new OpElement<T>(value, previous, next);
-                previous.Next = current;
-                next.Previous = current;
-            }
-
-            else
-            {
-                while (j != i)
+                else
                 {
                     current = current.Previous;
                     next = current;
                     previous = current.Next;
 
                     j += op;
-                }
 
-                current = new OpElement<T>(value, next, previous);
-                previous.Previous = current;
-                next.Next = current;
+                    current = new OpElement<T>(value, next, previous);
+                    previous.Previous = current;
+                    next.Next = current;
+                }
             }
 
         }
@@ -107,25 +105,11 @@ namespace OpList.ConsoleApp
 
             var j = 0;
 
-            if (op == 1)
+            while (j != i)
             {
+                current = op == 1 ? current.Next : current.Previous;
 
-                while (j != i)
-                {
-                    current = current.Next;
-
-                    j += op;
-                }
-            }
-
-            else
-            {
-                while (j != i)
-                {
-                    current = current.Previous;
-
-                    j += op;
-                }
+                j += op;
             }
 
             return current;
