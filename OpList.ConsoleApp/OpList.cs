@@ -52,44 +52,13 @@ namespace OpList.ConsoleApp
 
         public void Add(int i, T value)
         {
-            OpElement<T> previous = _first.Previous;
-            OpElement<T> current = _first;
-            OpElement<T> next = _first;
+            OpElement<T> current = IndexOf(i);
+            OpElement<T> previous = current.Previous;
+            OpElement<T> next = current;
 
-            var op = ReadMode(i);
-
-            var j = 0;
-
-            while (j != i)
-            {
-                if (op == 1)
-                {
-
-                    current = current.Next;
-                    next = current;
-                    previous = current.Previous;
-
-                    j += op;
-
-                    current = new OpElement<T>(value, previous, next);
-                    previous.Next = current;
-                    next.Previous = current;
-                }
-
-                else
-                {
-                    current = current.Previous;
-                    next = current;
-                    previous = current.Next;
-
-                    j += op;
-
-                    current = new OpElement<T>(value, next, previous);
-                    previous.Previous = current;
-                    next.Next = current;
-                }
-            }
-
+            current = new OpElement<T>(value, previous, next);
+            previous.Next = current;
+            next.Previous = current;
         }
 
         public void AddRange(OpList<T> range)
