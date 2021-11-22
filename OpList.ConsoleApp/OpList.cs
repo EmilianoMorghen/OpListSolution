@@ -126,10 +126,10 @@ namespace OpList.ConsoleApp
             return listToString.ToString();
         }
 
-        private int ReadMode(int i) => i < 0 ? -1 : 1;
-
         public IEnumerator<T> GetEnumerator() => new OpElementEnum<T>(this);
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        private int ReadMode(int i) => i < 0 ? -1 : 1;
     }
 }
