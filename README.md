@@ -3,6 +3,6 @@
 
 Make C# lists more powerful
 
-```list[-1] == list[list.Count - 1]```
+```OpList<T>[-1] == List[List.Count - 1]```
 
 Fortissima sta lista fra
