@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace OpList.ConsoleApp
@@ -66,22 +69,38 @@ namespace OpList.ConsoleApp
 
         }
 
-        public OpElement<T> IndexOf(int i)
+        public OpElement<T> IndexOf(int requestedIndex)
         {
-            OpElement<T> current = _first;
+            OpElement<T> currentNode = _first;
 
-            var op = ReadMode(i);
+            var indexOperation = new IndexOperation(requestedIndex);
 
-            var j = 0;
-
-            while (j != i)
+            for (var j = 0; j != indexOperation.Cycles; j++)
             {
-                current = op == 1 ? current.Next : current.Previous;
-
-                j += op;
+                currentNode = indexOperation.NextNodeFunc(currentNode);
             }
 
-            return current;
+            return currentNode;
+        }
+        public class IndexOperation
+        {
+            public int Cycles { get; }
+            public Func<OpElement<T>, OpElement<T>> NextNodeFunc { get; }
+
+            public IndexOperation(int requestedIndex)
+            {
+                var cyclingMode = ReadMode(requestedIndex);
+                NextNodeFunc = x => 
+                    cyclingMode == ModeEnum.Forward 
+                        ? x.Next 
+                        : x.Previous;
+
+                var requestedIndexModule = Math.Abs(requestedIndex);
+                Cycles = cyclingMode == ModeEnum.Forward 
+                    ? requestedIndexModule -1 
+                    : requestedIndexModule;
+            }
+            private ModeEnum ReadMode(int i) => i >= 0 ? ModeEnum.Forward : ModeEnum.Backward;
         }
 
         public void Replace(int i, T value)
@@ -106,8 +125,8 @@ namespace OpList.ConsoleApp
 
         public T this[int i]
         {
-            get { return IndexOf(i).Value; }
-            set { Replace(i, value); }
+            get => IndexOf(i).Value;
+            set => Replace(i, value);
         }
 
         public override string ToString()
@@ -130,6 +149,11 @@ namespace OpList.ConsoleApp
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private int ReadMode(int i) => i < 0 ? -1 : 1;
+    }
+
+    internal enum ModeEnum
+    {
+        Forward,
+        Backward
     }
 }
